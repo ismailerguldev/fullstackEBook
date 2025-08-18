@@ -1,11 +1,13 @@
-import { View, Text, Dimensions, TouchableOpacity } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { View, Text, Dimensions, TouchableOpacity, Image } from 'react-native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { HomeStackParams } from '../../Navigation/Stacks/HomeStack';
 import { Button } from 'react-native-paper';
 import { UserContext } from '../../Components/UserContext';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Book, UserValues } from '../../Sources/Models/models';
+import { LinearGradient } from 'expo-linear-gradient';
+import Animated, { BounceInDown, BounceInLeft } from 'react-native-reanimated';
 
 type Props = RouteProp<HomeStackParams, "BookDetail">;
 
@@ -13,11 +15,11 @@ const BookDetail = () => {
     const route = useRoute<Props>();
     const book: Book = route.params;
     const { width, height } = Dimensions.get("screen");
-
     const tempUser: UserValues = useContext(UserContext);
     const [user, setUser] = useState<UserValues>(tempUser);
     const [isReaden, setReaden] = useState<boolean>();
     const [isFavorite, setFavorite] = useState<boolean>();
+    const [key, setKey] = useState<number>(0)
     const handleRead = async () => {
         if (!user.readedBooks.includes(book)) {
             user.readedBooks.push(book)
@@ -90,39 +92,60 @@ const BookDetail = () => {
             setFavorite(false)
         }
     }, [route.params])
+    useFocusEffect(
+        useCallback(() => {
+            setUser(tempUser);
+            setKey(a => a + 1)
+        }, [tempUser])
+    );
     return (
-        <View style={{ width: width, height: height, padding: 20, }}>
+        <View style={{ width: width, height: height, paddingTop: 70, paddingHorizontal: 20, backgroundColor: "#151515" }}>
+            <LinearGradient colors={["#57379a", "transparent"]} style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 0,
+                height: height * 0.5,
+                filter: "blur(10px);"
+            }} />
             {
                 book ?
-                    <View style={{ gap: 15, alignItems: "center" }}>
+                    <Animated.View style={{ gap: 15, alignItems: "center" }} key={key} entering={BounceInLeft.duration(1000).springify()}>
                         <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
-                            <View style={{ width: width * 0.25, height: height * 0.18, backgroundColor: "#E7D2CD" }} />
-                            <TouchableOpacity style={{ position: "absolute", right: 0, top: 0 }} onPress={handleFavorite}>
-                                {isFavorite ? (
-                                    <AntDesign name="star" size={24} color="black" />
-                                ) : (
-                                    <AntDesign name="staro" size={24} color="black" />
-                                )}
-                            </TouchableOpacity>
-                            <View style={{ flex: 1 }}>
-                                <Text style={{ fontFamily: "Itim", fontSize: 24 }}>{book.title}</Text>
-                                <Text style={{ fontFamily: "Itim", fontSize: 18 }}>Author: {book.author}</Text>
-                                <Text style={{ fontFamily: "Itim", fontSize: 18 }}>Read Status: {isReaden ? "Yes" : "No"}</Text>
-                                <Text style={{ fontFamily: "Itim", fontSize: 18 }}>Genre: {book.genre}</Text>
+                            <Image source={{ uri: "https://picsum.photos/500/500" }} style={{ width: width * 0.25, height: height * 0.18, borderRadius: 15, }} />
+                            <View style={{ flex: 1, gap: 15, }}>
+                                <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 10, flexShrink: 1, }}>
+                                    <View style={{ flexShrink: 1, }}>
+                                        <Text style={{ fontFamily: "Itim", fontSize: 24, color: "#d9d9d9" }}>{book.title}</Text>
+                                    </View>
+                                    <TouchableOpacity onPress={handleFavorite} >
+                                        {isFavorite ? (
+                                            <AntDesign name="star" size={24} color="white" />
+                                        ) : (
+                                            <AntDesign name="staro" size={24} color="white" />
+                                        )}
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={{ fontFamily: "Itim", fontSize: 18, color: "#d9d9d9" }}>Author: {book.author}</Text>
+                                <Text style={{ fontFamily: "Itim", fontSize: 18, color: "#d9d9d9" }}>Read Status: {isReaden ? "Yes" : "No"}</Text>
+                                <Text style={{ fontFamily: "Itim", fontSize: 18, color: "#d9d9d9" }}>Genre: {book.genre}</Text>
                             </View>
                         </View>
-                        <View>
-                            <Text style={{ fontFamily: "Itim", fontSize: 24, }}>Description</Text>
-                            <Text>{book.description}</Text>
+                        <View style={{ gap: 10, }}>
+                            <Text style={{ fontFamily: "Itim", fontSize: 24, color: "#fafafa" }}>Description</Text>
+                            <Text style={{ color: "#d9d9d9", lineHeight: 25 }}>{book.description}</Text>
                         </View>
+
                         <Button
                             onPress={handleRead}
-                            mode="contained"
+                            mode="outlined"
+                            theme={{ colors: { outline: "#6443acff" } }}
                             style={{ width: width * 0.8, height: height * 0.05, justifyContent: "center", alignItems: "center", marginTop: height * 0.1 }}
                         >
-                            <Text>{isReaden ? "Mark as Unread" : "Mark as Read"}</Text>
+                            <Text style={{ color: "white" }}>{isReaden ? "Mark as Unread" : "Mark as Read"}</Text>
                         </Button>
-                    </View>
+
+                    </Animated.View>
                     :
                     <Text>Select a book</Text>
             }

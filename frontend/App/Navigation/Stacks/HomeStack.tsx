@@ -10,6 +10,10 @@ import ProfilePage from '../../Screens/Home/ProfilePage';
 import FavoritesPage from '../../Screens/Home/FavoritesPage';
 import CategoriesPage from '../../Screens/Home/CategoriesPage';
 import HomePage from '../../Screens/Home/HomePage';
+import Foundation from '@expo/vector-icons/Foundation';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 const Tabs = createBottomTabNavigator();
 export type HomeStackParams = {
     HomePage: UserValues;
@@ -36,25 +40,38 @@ const HomeStack = () => {
     return (
         <UserContext.Provider value={user}>
             <Tabs.Navigator screenOptions={{
-                headerStyle: {
-                    borderRadius: 30,
-                    backgroundColor: "#A7C7E7"
-                },
-                headerTitleAlign: "center",
-                headerTitleStyle: {
-                    fontSize: 24,
-                    fontFamily: "Itim"
-                },
                 tabBarStyle: {
-                    borderRadius: 30,
-                    backgroundColor: "#d9d9d9"
-                }
+                    backgroundColor: "#151515",
+                    borderColor: "#1c1c1c",
+                    borderTopWidth: 1,
+                    elevation: 0,
+                },
+                tabBarActiveTintColor: "white",
+                headerShown: false,
+                lazy: false 
             }}>
-                <Tabs.Screen name="HomePage" component={HomePage} options={{ title: "Home Page" }} />
-                <Tabs.Screen name="CategoryPage" component={CategoriesPage} options={{ title: "Categories Page" }} />
-                <Tabs.Screen name="BookDetail" component={BookDetail} options={{ title: "Book Detail" }} />
-                <Tabs.Screen name="FavoritePage" component={FavoritesPage} options={{ title: "Favoriets" }} />
-                <Tabs.Screen name="ProfilePage" component={ProfilePage} options={{ title: "Profile" }} />
+                <Tabs.Screen name="HomePage" component={HomePage} options={{
+                    title: "Home",
+                    tabBarIcon: ({ color }) => <Foundation name="home" size={24} color={color} />
+
+                }} />
+                <Tabs.Screen name="CategoryPage" component={CategoriesPage} options={{
+                    title: "Categories",
+                    tabBarIcon: ({ color }) => <MaterialCommunityIcons name="bookshelf" size={24} color={color} />,
+
+                }} />
+                <Tabs.Screen name="BookDetail" component={BookDetail} options={{
+                    title: "Book Detail",
+                    tabBarIcon: ({ color }) => <Entypo name="book" size={24} color={color} />
+                }} />
+                <Tabs.Screen name="FavoritePage" component={FavoritesPage} options={{
+                    title: "Favoriets",
+                    tabBarIcon: ({ color }) => <Entypo name="heart" size={24} color={color} />
+                }} />
+                <Tabs.Screen name="ProfilePage" component={ProfilePage} options={{
+                    title: "Profile",
+                    tabBarIcon: ({ color }) => <FontAwesome5 name="user-alt" size={24} color={color} />
+                }} />
             </Tabs.Navigator>
         </UserContext.Provider>
     )

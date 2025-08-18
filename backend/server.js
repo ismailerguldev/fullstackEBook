@@ -41,7 +41,7 @@ app.put("/add/favoritebook/:id/", (req, res) => {
     const id = req.params.id
     if (!favBooks) { return res.status(400).send("Please fill all fields") }
     con.query("UPDATE userdb SET favoriteBooks = ? WHERE id = ?", [favBooks, id], (err, result) => {
-        if (err) { return res.status(500).send("Server Error occured while edit favorite books") }
+        if (err) { return res.status(500).send(`Server Error occured while edit favorite books. => ${err.message}`) }
         res.send("Favorite Books Edited Successfully")
     })
 })
