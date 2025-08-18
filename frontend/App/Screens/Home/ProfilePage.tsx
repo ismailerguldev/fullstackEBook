@@ -6,28 +6,26 @@ import { Button, TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams, UserValues } from '../../Sources/Models/models';
+import { removeUser, setStateUser, setUser, userSelector } from '../../Redux/userSlice';
+import { useAppDispatch, useAppSelector } from '../../Redux/hook';
 
 const ProfilePage = () => {
     const { width, height } = Dimensions.get("screen");
-    const tempUser: UserValues = useContext(UserContext);
-    const [user, setUser] = useState<UserValues>(tempUser);
+    const state = useAppSelector(userSelector)
+    const user = state.user
     const [key, setKey] = useState<number>(0);
     const [modalVisible, setVisible] = useState<boolean>(false);
     const [isChangeUsername, setChange] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
-    useFocusEffect(
-        useCallback(() => {
-            setKey(a => a + 1);
-            setUser(tempUser);
-        }, [tempUser])
-    );
-
+    const dispatch = useAppDispatch()
     const removeAcc = async () => {
         try {
-            await AsyncStorage.removeItem("user");
+            await AsyncStorage.removeItem("user")
+            dispatch(removeUser())
             navigation.navigate("AuthPage");
+            
         } catch (e) {
             console.log("Error removing user:", e);
         }
@@ -44,7 +42,6 @@ const ProfilePage = () => {
             })
                 .then(() => {
                     const newUser = { ...user, username: username };
-                    setUser(newUser);
                     setVisible(false);
                     setUsername("");
                 })
