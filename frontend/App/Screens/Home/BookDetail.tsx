@@ -8,7 +8,8 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { Book, UserValues } from '../../Sources/Models/models';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { BounceInDown, BounceInLeft } from 'react-native-reanimated';
-
+import BookBox from '../../Components/BookBox';
+import Entypo from '@expo/vector-icons/Entypo';
 type Props = RouteProp<HomeStackParams, "BookDetail">;
 
 const BookDetail = () => {
@@ -99,7 +100,7 @@ const BookDetail = () => {
         }, [tempUser])
     );
     return (
-        <View style={{ width: width, height: height, paddingTop: 70, paddingHorizontal: 20, backgroundColor: "#151515" }}>
+        <View style={{ width: width, height: height, paddingTop: 80, paddingHorizontal: 20, backgroundColor: "#151515" }}>
             <LinearGradient colors={["#57379a", "transparent"]} style={{
                 position: 'absolute',
                 left: 0,
@@ -111,31 +112,21 @@ const BookDetail = () => {
             {
                 book ?
                     <Animated.View style={{ gap: 15, alignItems: "center" }} key={key} entering={BounceInLeft.duration(1000).springify()}>
-                        <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
-                            <Image source={{ uri: "https://picsum.photos/500/500" }} style={{ width: width * 0.25, height: height * 0.18, borderRadius: 15, }} />
-                            <View style={{ flex: 1, gap: 15, }}>
-                                <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 10, flexShrink: 1, }}>
-                                    <View style={{ flexShrink: 1, }}>
-                                        <Text style={{ fontFamily: "Itim", fontSize: 24, color: "#d9d9d9" }}>{book.title}</Text>
-                                    </View>
-                                    <TouchableOpacity onPress={handleFavorite} >
-                                        {isFavorite ? (
-                                            <AntDesign name="star" size={24} color="white" />
-                                        ) : (
-                                            <AntDesign name="staro" size={24} color="white" />
-                                        )}
-                                    </TouchableOpacity>
-                                </View>
-                                <Text style={{ fontFamily: "Itim", fontSize: 18, color: "#d9d9d9" }}>Author: {book.author}</Text>
-                                <Text style={{ fontFamily: "Itim", fontSize: 18, color: "#d9d9d9" }}>Read Status: {isReaden ? "Yes" : "No"}</Text>
-                                <Text style={{ fontFamily: "Itim", fontSize: 18, color: "#d9d9d9" }}>Genre: {book.genre}</Text>
-                            </View>
+                        <View style={{ width: "100%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                            <Text style={{ color: "white", fontSize: 24, fontWeight: "500", flex: 1, textAlign: "center" }}>Book Detail</Text>
+                            <TouchableOpacity onPress={handleFavorite} >
+                                {isFavorite ? (
+                                    <AntDesign name="star" size={24} color="white" />
+                                ) : (
+                                    <AntDesign name="staro" size={24} color="white" />
+                                )}
+                            </TouchableOpacity>
                         </View>
+                        <BookBox book={book} />
                         <View style={{ gap: 10, }}>
                             <Text style={{ fontFamily: "Itim", fontSize: 24, color: "#fafafa" }}>Description</Text>
                             <Text style={{ color: "#d9d9d9", lineHeight: 25 }}>{book.description}</Text>
                         </View>
-
                         <Button
                             onPress={handleRead}
                             mode="outlined"

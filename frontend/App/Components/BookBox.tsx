@@ -1,5 +1,5 @@
 import { View, Text, Dimensions, TouchableOpacity, Image } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, { ElementType, JSX, JSXElementConstructor, useContext, useState } from 'react';
 import { Book } from '../Sources/Models/models';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
