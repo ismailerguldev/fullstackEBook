@@ -10,9 +10,11 @@ const HomePage = () => {
   const { width, height } = Dimensions.get("screen");
   const state = useAppSelector(userSelector)
   const user = state.user
-  useEffect(() => {
-    console.log(state.isLoading)
-  }, [])
+  const getRandomMessage = (): string => {
+    const messages = ["Welcome Back,", "What's Up,", "Hi,", "Hello", "Have a good day,"]
+    const randomMessage = messages[Math.round(Math.random() * messages.length)]
+    return randomMessage
+  }
   return (
     <View style={{ width: width, height: height, backgroundColor: "#151515", paddingTop: 100, paddingHorizontal: 20, gap: 40, }}>
       <LinearGradient colors={["#57379a", "transparent"]} style={{
@@ -26,8 +28,8 @@ const HomePage = () => {
       {
         !state.isLoading ? <View style={{ gap: 30, }}>
           <Animated.View entering={BounceInLeft.duration(800)}>
-            <Text style={{ color: "white", fontSize: 24, fontWeight: "500", }}>Welcome Back, {user.username}!</Text>
-            <Text style={{ color: "gray", fontFamily: "Itim", fontSize:18, }}>How are you?</Text>
+            <Text style={{ color: "white", fontSize: 24, fontWeight: "500", }}>{getRandomMessage()} {user.username}!</Text>
+            <Text style={{ color: "gray", fontFamily: "Itim", fontSize: 18, }}>How are you?</Text>
           </Animated.View>
           <Animated.View entering={BounceInRight.duration(800).delay(500)}>
             <BookRow title='Recommended Books' />

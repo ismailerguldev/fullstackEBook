@@ -34,7 +34,7 @@ export const addReadedBook = createAsyncThunk<void, Book, { state: RootState }>(
         const state = getState()
         const user = state.userReducer.user
         try {
-            await fetch(`http://192.168.1.76:5000/add/readedBook/${user.id}`, {
+            await fetch(`http://192.168.1.76:5000/add/readedbook/${user.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

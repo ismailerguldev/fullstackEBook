@@ -1,30 +1,17 @@
-import express from "express"
-import sql from "mysql2"
-const app = express()
-const con = sql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "isbelvalex123",
-    database: "ebookdb"
-})
+import { con } from "../db/mysql.js"
 const port = 5000
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
-
-app.get("/", (req, res) => {
+const test = (req, res) => {
     res.status(200).send(`Server running successfully on Port: ${port}`)
-})
-
-app.post("/register", (req, res) => {
+}
+const registerUser = (req, res) => {
     const { username, email, password } = req.body
     if (!username || !email || !password) { return res.status(400).send("Please fill all fields") }
     con.query("INSERT INTO userdb (username,email,password) VALUES(?,?,?)", [username, email, password], (err, result) => {
         if (err) { return res.status(500).send("Server Error occured while add user") }
         res.send("Register User Succeedd")
     })
-})
-app.post("/login", (req, res) => {
+}
+const login = (req, res) => {
     const { email, password } = req.body
     if (!email || !password) { return res.status(400).send("Please fill all fields") }
     con.query("SELECT id, username, email, password, favoriteBooks, readedBooks FROM userdb WHERE email = ? AND password = ? LIMIT 1", [email, password], (err, result) => {
@@ -35,8 +22,8 @@ app.post("/login", (req, res) => {
         user.readedBooks = user.readedBooks ? user.readedBooks : []
         res.json(user)
     })
-})
-app.put("/add/favoritebook/:id/", (req, res) => {
+}
+const addFavBook = (req, res) => {
     const favBooks = JSON.stringify(req.body.favBooks)
     const id = req.params.id
     if (!favBooks) { return res.status(400).send("Please fill all fields") }
@@ -44,8 +31,8 @@ app.put("/add/favoritebook/:id/", (req, res) => {
         if (err) { return res.status(500).send(`Server Error occured while edit favorite books. => ${err.message}`) }
         res.send("Favorite Books Edited Successfully")
     })
-})
-app.put("/add/readedbook/:id/", (req, res) => {
+}
+const addReadedBook = (req, res) => {
     const readedBook = JSON.stringify(req.body.readedBook)
     const id = req.params.id
     if (!readedBook) { return res.status(400).send("Please fill all fields") }
@@ -53,8 +40,8 @@ app.put("/add/readedbook/:id/", (req, res) => {
         if (err) { return res.status(500).send("Server Error occured while edit readed books") }
         res.send("Readed Books Edited Successfully")
     })
-})
-app.put("/change/username/:id", (req, res) => {
+}
+const changeUsername = (req, res) => {
     const { username } = req.body
     const id = req.params.id
     if (!username) { return res.status(400).send("Please fill all fields") }
@@ -62,8 +49,8 @@ app.put("/change/username/:id", (req, res) => {
         if (err) { return res.status(500).send("Server Error occured while change username") }
         res.send("Username changed successfully")
     })
-})
-app.put("/change/password/:id", (req, res) => {
+}
+const changePassword = (req, res) => {
     const { password } = req.body
     const id = req.params.id
     if (!password) { return res.status(400).send("Please fill all fields") }
@@ -71,11 +58,5 @@ app.put("/change/password/:id", (req, res) => {
         if (err) { return res.status(500).send("Server Error occured while change password") }
         res.send("Password changed successfully")
     })
-})
-con.connect((err) => {
-    if (err) throw err
-    console.log("Connected to MySQL2")
-})
-app.listen(port, () => {
-    console.log("Server Started on Port:", port)
-})
+}
+export default {registerUser, login, addFavBook, addReadedBook, changeUsername, changePassword, test}

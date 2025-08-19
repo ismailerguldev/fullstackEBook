@@ -22,6 +22,10 @@ const ProfilePage = () => {
     const [password, setPassword] = useState<string>('');
     const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
     const dispatch = useAppDispatch()
+    const getRank = (): string => {
+        const rank = user.readedBooks.length === 0 ? "Noob Reader" : user.readedBooks.length < 5 ? "Reader" : user.readedBooks.length < 10 ? "Pro Reader" : "Mega Reader"
+        return rank
+    }
     const removeAcc = async () => {
         try {
             await AsyncStorage.removeItem("user")
