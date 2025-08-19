@@ -5,6 +5,7 @@ export const con = sql.createConnection({
     password: "isbelvalex123",
     database: "ebookdb"
 })
+
 con.connect((err) => {
     if (err) throw err
     console.log("Connected to MySQL2")
