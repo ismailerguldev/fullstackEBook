@@ -1,4 +1,4 @@
-import { View, Dimensions, Text, TextInput, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { View, Dimensions, Text, TextInput, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from "@react-navigation/stack"
@@ -118,9 +118,14 @@ const AuthScreen = () => {
                             <TextInput style={{
                                 borderColor: "#aeaeae", borderWidth: 0.3, borderRadius: 5, color: "white", paddingHorizontal: 20, height: height * 0.05
                             }} placeholder='Email' placeholderTextColor="white" onChangeText={setEmail} />
-                            <TextInput style={{
-                                borderColor: "#aeaeae", borderWidth: 0.3, borderRadius: 5, color: "white", paddingHorizontal: 20, height: height * 0.05
-                            }} placeholder='Password' placeholderTextColor="white" onChangeText={setPassword} />
+                            <View>
+                                <TextInput style={{
+                                    borderColor: "#aeaeae", borderWidth: 0.3, borderRadius: 5, color: "white", paddingHorizontal: 20, height: height * 0.05
+                                }} placeholder='Password' placeholderTextColor="white" onChangeText={setPassword} secureTextEntry={isVisible} />
+                                <TouchableOpacity onPress={()=> setIsVisible(!isVisible)} style={{ position: "absolute", right: 0, top: "50%", transform: "translate(0,-50%)", paddingRight: 20, }}>
+                                    {isVisible ? <Entypo name="eye" size={24} color="white" /> : <Entypo name="eye-with-line" size={24} color="white" />}
+                                </TouchableOpacity>
+                            </View>
                         </Animated.View>
                         <Button onPress={handleAuth} mode='outlined' textColor='white' theme={{ colors: { outline: "#6443acff" } }} style={{ paddingHorizontal: 20, paddingVertical: 3, borderRadius: 10 }}>
                             {isSignUp ? "Sign Up" : "Sign In"}
