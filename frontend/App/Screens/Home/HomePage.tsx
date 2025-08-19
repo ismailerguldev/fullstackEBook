@@ -12,7 +12,7 @@ const HomePage = () => {
   const user = state.user
   useEffect(() => {
     console.log(state.isLoading)
-  },[])
+  }, [])
   return (
     <View style={{ width: width, height: height, backgroundColor: "#151515", paddingTop: 100, paddingHorizontal: 20, gap: 40, }}>
       <LinearGradient colors={["#57379a", "transparent"]} style={{
@@ -24,9 +24,10 @@ const HomePage = () => {
         filter: "blur(10px);"
       }} />
       {
-        !state.isLoading ? <View style={{ gap: 20,}}>
+        !state.isLoading ? <View style={{ gap: 30, }}>
           <Animated.View entering={BounceInLeft.duration(800)}>
             <Text style={{ color: "white", fontSize: 24, fontWeight: "500", }}>Welcome Back, {user.username}!</Text>
+            <Text style={{ color: "gray", fontFamily: "Itim", fontSize:18, }}>How are you?</Text>
           </Animated.View>
           <Animated.View entering={BounceInRight.duration(800).delay(500)}>
             <BookRow title='Recommended Books' />

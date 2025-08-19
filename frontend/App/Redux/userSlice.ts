@@ -154,25 +154,23 @@ export const userSlice = createSlice({
                 readedBooks: []
             }
             state.isLogged = false
+        },
+        changeUserName: (state, action: PayloadAction<string>) => {
+            state.user.username = action.payload
         }
     },
     extraReducers: (builder) => {
         builder
             .addCase(getUser.pending, (state) => {
-                console.log("pendingde duruyoer")
                 state.isLoading = true
                 state.isLogged = false
-                console.log("pendingden çıktı")
             })
             .addCase(getUser.fulfilled, (state, action) => {
-                console.log("fulfilled")
                 state.user = action.payload
                 state.isLogged = true
                 state.isLoading = false
-                console.log(state.isLoading, "isload")
             })
             .addCase(getUser.rejected, (state, action) => {
-                console.log("rejected")
                 state.isLogged = false
                 state.isLoading = false
             })
@@ -199,6 +197,6 @@ export const userSlice = createSlice({
             })
     }
 })
-export const { addStateReadedBook, removeStateReadedBook, addStateFavoriteBook, removeStateFavoriteBook, setLogged, setStateUser, removeUser } = userSlice.actions
+export const { addStateReadedBook, removeStateReadedBook, addStateFavoriteBook, removeStateFavoriteBook, setLogged, setStateUser, removeUser, changeUserName } = userSlice.actions
 export const userSelector = (state: RootState) => state.userReducer
 export default userSlice.reducer

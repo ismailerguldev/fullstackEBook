@@ -33,7 +33,7 @@ const CategoriesPage = () => {
                         <Text style={{ fontSize: 26, fontWeight: 500, color: "white" }}>Search</Text>
                         <BlurView intensity={50} style={{ borderRadius: 20, overflow: "hidden", justifyContent: "center", paddingLeft: 45, gap: 10, borderWidth: 0.6, borderColor: "#ccc" }}>
                             <FontAwesome name="search" size={24} color="#aaa" style={{ position: "absolute", left: 20 }} />
-                            <TextInput placeholder='Discover Category or Book' placeholderTextColor="#aaa" style={{ fontSize: 16, color: "#fafafa" }} onChangeText={setSearch} />
+                            <TextInput placeholder='Search Category' placeholderTextColor="#aaa" style={{ fontSize: 16, color: "#fafafa" }} onChangeText={setSearch} />
                         </BlurView>
                     </View>
                     {genres.filter(genre => genre.toLowerCase().includes(search.toLowerCase())).map((genre, index) => (
