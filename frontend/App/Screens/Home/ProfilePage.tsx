@@ -91,7 +91,7 @@ const ProfilePage = () => {
                 <Text style={{ color: "white", fontSize: 28, fontFamily: "Itim" }}>{user.username}</Text>
                 <Text style={{ color: "gray", fontSize: 16 }}>
                     {
-                        user.readedBooks.length === 0 ? "Noob Reader" : user.readedBooks.length < 5 ? "Reader" : user.readedBooks.length < 10 ? "Pro Reader" : "Mega Reader"
+                        getRank()
                     }
                 </Text>
                 <View style={{ width: "100%", flexDirection: "row", alignItems: "center" }}>
